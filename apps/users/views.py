@@ -213,7 +213,7 @@ class MymessageView(LoginRequiredMinxin,View):
              page = request.GET.get('page', 1)
         except PageNotAnInteger:
              page = 1
-        p = Paginator(all_message,4, request=request)
+        p = Paginator(all_message,9, request=request)
 
         message= p.page(page)
         return render(request,"usercenter-message.html",{
