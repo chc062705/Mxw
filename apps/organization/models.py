@@ -25,6 +25,7 @@ class Courseorg(models.Model):
     fav_nums=models.IntegerField(default=0,verbose_name="收藏人数")
     image=models.ImageField(upload_to="org/%y/%m",verbose_name="logo")
     city=models.ForeignKey(City,verbose_name="所在城市")
+    type=models.CharField(max_length=5,default=u'全国知名',verbose_name="机构类型")
     students=models.IntegerField(default=0,verbose_name="学生人数")
     course_nums=models.IntegerField(default=0,verbose_name="课程数")
     adress=models.CharField(max_length=150,verbose_name="机构地址")

@@ -4,7 +4,7 @@ from operation.models import UserCourse,UserFavorite,UserMassage
 from organization.models import Courseorg,Teacher
 from course.models import Course
 from django.shortcuts import render
-from users.models import UserProfile,EmailVerifyRecord
+from users.models import UserProfile,EmailVerifyRecord,Banner
 from django.contrib.auth import login,authenticate,logout
 from django.contrib.auth.backends import ModelBackend
 from utils.minxin_until import LoginRequiredMinxin
@@ -37,7 +37,8 @@ class LoginView(View):
             if user:
                 if user.is_active:
                     login(request,user)
-                    return render(request,"index.html",{"msg":u"用户名或密码错误"})
+                    from django.core.urlresolvers import reverse
+                    return HttpResponseRedirect(reverse("index"))
                 else:
                     return render(request,"login.html",{"msg":u"用户未激活"})
             else:
@@ -219,3 +220,29 @@ class MymessageView(LoginRequiredMinxin,View):
         return render(request,"usercenter-message.html",{
             "all_message":message
         })
+class IndexView(View):
+    def get(self,request):
+        all_banner=Banner.objects.all().order_by('index')
+        all_course=Course.objects.filter(is_banner=False)[:5]
+        banner=Course.objects.filter(is_banner=True)[:3]
+        course_org=Courseorg.objects.all()[:15]
+        return render(request,'index.html',{
+            "all_banner":all_banner,
+            "all_course":all_course,
+            "banner":banner,
+            "course_org":course_org
+
+
+        })
+
+def page_404(request):
+    from  django.shortcuts import render_to_response
+    response=render_to_response("404.html",{})
+    response.status_code=404
+    return response
+
+def page_500(request):
+    from  django.shortcuts import render_to_response
+    response=render_to_response("500.html",{})
+    response.status_code=500
+    return response

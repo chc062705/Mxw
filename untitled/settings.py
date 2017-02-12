@@ -25,9 +25,9 @@ ROOT_PATH = os.path.dirname(__file__)
 SECRET_KEY = 'zn5$bj-#$c_q%3@5-g&zepc9wtdfu9psab37ia#t8qxoab=!lg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 AUTHENTICATION_BACKENDS=(
     'users.views.CustomBackend',
 )
@@ -156,3 +156,4 @@ EMAIL_FROM="18928264059@163.com"
 
 MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+STATIC_ROOT=os.path.join(BASE_DIR,'static')

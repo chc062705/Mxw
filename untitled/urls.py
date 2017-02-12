@@ -20,18 +20,18 @@ from django.views.generic import TemplateView
 from apps.organization.views import OrgView
 #使用media处理图片是配置
 from django.views.static import serve
-from untitled.settings import MEDIA_ROOT
-from apps.users.views import LoginView,RegisterView,ActiveUserView,LogoutView
+from untitled.settings import MEDIA_ROOT,STATIC_ROOT
+from apps.users.views import LoginView,RegisterView,ActiveUserView,LogoutView,IndexView,page_404
 import xadmin
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
-    url('^$',TemplateView.as_view(template_name="index.html"),name="index"),
+    url('^$',IndexView.as_view(),name="index"),
     url('^login/$',LoginView.as_view(),name="login"),
     url('^logout/$',LogoutView.as_view(),name="logout"),
     url('^register/$',RegisterView.as_view(),name="register"),
     url(r'^captcha/', include('captcha.urls')),
     url('^active/(?P<active_code>.*)/$',ActiveUserView.as_view(),name="active"),
-    url('^$',TemplateView.as_view(template_name="org-list.html"),name="index"),
+
 
     #课程机构url配置
     url(r'^org/', include('organization.urls',namespace="org")),
@@ -39,7 +39,10 @@ urlpatterns = [
     url(r'^user/', include('users.urls',namespace="user")),
 
     #配置上传文件访问media
-    url(r"^media/(?P<path>.*)$",serve,{'document_root':MEDIA_ROOT})
+    url(r"^media/(?P<path>.*)$",serve,{'document_root':MEDIA_ROOT}),
+    url(r"^static/(?P<path>.*)$",serve,{'document_root':STATIC_ROOT})
 
     #ieetffmmacbycbux；rxbsrtcrjjxbctc
 ]
+handler404='users.views.page_404'
+handler500='users.views.page_500'
